@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova Home</title>
+<meta name="description" content="Nova Home: tela inicial para Android no estilo do Android TV, feita para jogar no controle — jogos, ROMs, emuladores, filmes e trailers num só lugar.">
+<meta property="og:title" content="Nova Home">
+<meta property="og:description" content="Tela inicial para Android no estilo do Android TV, feita para o controle.">
+<meta property="og:image" content="img/inicio.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fundo: #14171f;
+    --fundo-2: #1b1f2a;
+    --cartao: #222735;
+    --borda: #2e3445;
+    --texto: #eef0f5;
+    --texto-2: #a7adbd;
+    --destaque: #6c8cff;
+    --destaque-2: #9fb3ff;
+    --ok: #4cc38a;
+    --raio: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font: 17px/1.6 Roboto, system-ui, sans-serif;
+  }
+  a { color: var(--destaque-2); }
+  img { max-width: 100%; display: block; }
+  .largura { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+  /* Topo */
+  header.barra {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(20, 23, 31, .85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--borda);
+  }
+  header.barra .largura { display: flex; align-items: center; gap: 24px; height: 60px; }
+  .marca { font-weight: 700; font-size: 19px; color: var(--texto); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .pontos { display: inline-flex; gap: 3px; }
+  .pontos i { width: 7px; height: 7px; border-radius: 50%; display: block; }
+  nav.abas { display: flex; gap: 22px; margin-left: auto; overflow-x: auto; }
+  nav.abas a { color: var(--texto-2); text-decoration: none; white-space: nowrap; font-size: 15px; padding: 18px 0; border-bottom: 2px solid transparent; }
+  nav.abas a:hover { color: var(--texto); border-color: var(--texto); }
+
+  /* Capa */
+  .capa { position: relative; padding: 72px 0 40px; overflow: hidden; }
+  .capa::before {
+    content: ""; position: absolute; inset: 0;
+    background: url(img/inicio.png) center/cover;
+    opacity: .28; filter: blur(2px);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  }
+  .capa .largura { position: relative; }
+  .rotulo { color: var(--texto-2); font-size: 14px; letter-spacing: .04em; }
+  h1 { font-size: clamp(40px, 7vw, 72px); font-weight: 300; margin: 6px 0 10px; line-height: 1.05; }
+  .subtitulo { font-size: clamp(18px, 2.4vw, 22px); color: var(--texto-2); max-width: 680px; margin: 0 0 28px; }
+  .botoes { display: flex; flex-wrap: wrap; gap: 12px; }
+  .botao {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: 500;
+    background: var(--cartao); color: var(--texto); border: 1px solid var(--borda);
+  }
+  .botao.principal { background: var(--texto); color: #111; border-color: var(--texto); }
+  .botao:hover { outline: 3px solid var(--destaque); outline-offset: 2px; }
+  .selos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .selo { font-size: 13px; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,.08); color: var(--texto-2); }
+  .tela-principal {
+    margin-top: 44px; border-radius: var(--raio); overflow: hidden;
+    border: 1px solid var(--borda); box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+
+  /* Seções */
+  section { padding: 64px 0; border-top: 1px solid var(--borda); }
+  h2 { font-size: clamp(28px, 4vw, 36px); font-weight: 400; margin: 0 0 8px; }
+  h3 { font-size: 19px; font-weight: 500; margin: 0 0 6px; }
+  .intro { color: var(--texto-2); max-width: 760px; margin: 0 0 32px; }
+
+  .grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .cartao { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 22px; }
+  .cartao p { margin: 0; color: var(--texto-2); font-size: 15.5px; }
+  .icone { font-size: 26px; margin-bottom: 10px; }
+
+  .destaque { display: grid; gap: 32px; grid-template-columns: 1.3fr 1fr; align-items: center; margin-bottom: 56px; }
+  .destaque.inverso { grid-template-columns: 1fr 1.3fr; }
+  .destaque.inverso figure { order: 2; }
+  .destaque figure { margin: 0; border-radius: var(--raio); overflow: hidden; border: 1px solid var(--borda); }
+  .destaque ul { padding-left: 20px; color: var(--texto-2); margin: 10px 0 0; }
+  .destaque li { margin-bottom: 6px; }
+  @media (max-width: 820px) {
+    .destaque, .destaque.inverso { grid-template-columns: 1fr; }
+    .destaque.inverso figure { order: 0; }
+  }
+
+  .galeria { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+  .galeria figure { margin: 0; flex: 0 0 min(560px, 85vw); scroll-snap-align: start; }
+  .galeria img { border-radius: 10px; border: 1px solid var(--borda); cursor: zoom-in; }
+  .galeria figcaption { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  th { color: var(--texto-2); font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; }
+  .tabela { overflow-x: auto; background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); }
+  td code, p code, li code { background: rgba(255,255,255,.07); padding: 1px 6px; border-radius: 4px; font-size: 14px; }
+  .ext { color: var(--texto-2); font-size: 14px; }
+  .sim { color: var(--ok); }
+
+  .teclas { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+  .tecla { display: flex; gap: 12px; align-items: center; background: var(--cartao); border: 1px solid var(--borda); border-radius: 10px; padding: 12px 14px; }
+  kbd { min-width: 46px; text-align: center; padding: 4px 8px; border-radius: 8px; background: var(--fundo-2); border: 1px solid var(--borda); font: 500 14px Roboto, sans-serif; color: var(--texto); }
+  .tecla span { color: var(--texto-2); font-size: 15px; }
+
+  .passos { counter-reset: passo; list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .passos li { counter-increment: passo; position: relative; padding: 16px 18px 16px 62px; background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); color: var(--texto-2); }
+  .passos li::before { content: counter(passo); position: absolute; left: 18px; top: 14px; width: 30px; height: 30px; border-radius: 50%; background: var(--destaque); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .passos strong { color: var(--texto); }
+
+  pre { background: #0d0f15; border: 1px solid var(--borda); border-radius: 10px; padding: 16px; overflow-x: auto; font-size: 14px; color: #d6dbe8; }
+
+  .linha-tempo { border-left: 2px solid var(--borda); margin-left: 8px; padding-left: 24px; }
+  .versao { position: relative; margin-bottom: 18px; }
+  .versao::before { content: ""; position: absolute; left: -31px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--destaque); }
+  .versao b { color: var(--texto); }
+  .versao p { margin: 2px 0 0; color: var(--texto-2); font-size: 15.5px; }
+
+  footer { padding: 40px 0 60px; border-top: 1px solid var(--borda); color: var(--texto-2); font-size: 14px; }
+
+  #zoom { position: fixed; inset: 0; background: rgba(0,0,0,.9); display: none; place-items: center; z-index: 50; padding: 16px; cursor: zoom-out; }
+  #zoom.aberto { display: grid; }
+  #zoom img { max-height: 92vh; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="largura">
+    <a class="marca" href="#">
+      <span class="pontos"><i style="background:#4285f4"></i><i style="background:#ea4335"></i><i style="background:#fbbc05"></i><i style="background:#34a853"></i></span>
+      Nova Home
+    </a>
+    <nav class="abas">
+      <a href="#recursos">Recursos</a>
+      <a href="#telas">Telas</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#fontes">Fontes e chaves</a>
+      <a href="#controle">Controle</a>
+      <a href="#instalar">Instalar</a>
+      <a href="#versoes">Versões</a>
+    </nav>
+  </div>
+</header>
+
+<div class="capa">
+  <div class="largura">
+    <div class="rotulo">LAUNCHER PARA ANDROID · VERSÃO 3.1</div>
+    <h1>Nova Home</h1>
+    <p class="subtitulo">Uma tela inicial no estilo do Android TV para celulares e tablets ligados no controle. Jogos de Android, ROMs de emulador, filmes, séries e trailers — tudo em fileiras, pronto para o direcional.</p>
+    <div class="botoes">
+      <a class="botao principal" href="https://github.com/Breno12276/NovaHome/releases/latest">⬇ Baixar o APK</a>
+      <a class="botao" href="https://github.com/Breno12276/NovaHome">Código no GitHub</a>
+      <a class="botao" href="#recursos">Ver recursos</a>
+    </div>
+    <div class="selos">
+      <span class="selo">Android 13 ou mais novo</span>
+      <span class="selo">Feito em Kotlin, sem bibliotecas pesadas</span>
+      <span class="selo">APK de ~420 KB</span>
+      <span class="selo">Funciona sem nenhuma chave de API</span>
+      <span class="selo">Em português</span>
+    </div>
+    <div class="tela-principal">
+      <img src="img/inicio.png" alt="Tela Início da Nova Home: destaque de filme no topo, apps favoritos, jogos e filmes populares em fileiras" width="1280" height="720">
+    </div>
+  </div>
+</div>
+
+<section id="recursos">
+  <div class="largura">
+    <h2>O que a Nova Home faz</h2>
+    <p class="intro">Ela substitui a tela inicial do aparelho (ou abre como um app comum) e organiza tudo em três abas — <b>Início</b>, <b>Jogos</b> e <b>Apps</b> — pensadas para serem usadas de longe, com um controle de videogame.</p>
+
+    <div class="destaque">
+      <figure><img src="img/jogos.png" alt="Aba Jogos com jogos Android, ROMs de PlayStation 2 em capa em pé e jogos de Switch" loading="lazy"></figure>
+      <div>
+        <h3>🎮 Todos os seus jogos num lugar</h3>
+        <p class="intro" style="margin:0">Jogos de Android e ROMs de emulador lado a lado, cada plataforma na sua fileira.</p>
+        <ul>
+          <li>Escolha as pastas de ROMs; a plataforma é detectada pela pasta e pela extensão.</li>
+          <li>Cada jogo abre direto no emulador certo (DuckStation, NetherSX2, PPSSPP, Dolphin, Eden, Azahar, RetroArch…).</li>
+          <li>Capas automáticas: banner deitado ou a caixa original em pé, por plataforma.</li>
+          <li>Atalhos fixados por outros apps (ex.: GameHub) aparecem na aba Jogos.</li>
+          <li>Arraste para reordenar, renomeie, troque a capa ou esconda qualquer jogo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="destaque inverso">
+      <figure><img src="img/info-jogo.png" alt="Tela de informações do God of War III com logo, sinopse em português e ficha técnica" loading="lazy"></figure>
+      <div>
+        <h3>📖 Página de cada jogo</h3>
+        <p class="intro" style="margin:0">Aperte Quadrado (ou X) num jogo e veja tudo sobre ele, como na loja de um console.</p>
+        <ul>
+          <li>Logo, sinopse em português, selos (Metacritic, idade, multijogador).</li>
+          <li>Ficha: desenvolvedora, lançamento, gêneros, série, direção, música.</li>
+          <li>Galeria de prints e artes — escolha uma e ela vira o fundo.</li>
+          <li>Trailer de fundo e conquistas do RetroAchievements nas ROMs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="destaque">
+      <figure><img src="img/trailer.png" alt="Trailer de jogo tocando em tela cheia" loading="lazy"></figure>
+      <div>
+        <h3>🎬 Trailers que tocam sozinhos</h3>
+        <p class="intro" style="margin:0">Pare o foco um segundo num jogo, filme ou série e o trailer começa no fundo.</p>
+        <ul>
+          <li>Trailers da Steam ou do YouTube, dublados quando existem.</li>
+          <li>Som que começa em 50% e sobe devagar até 100%.</li>
+          <li>Sem mexer no controle, a interface some e o trailer fica em tela cheia.</li>
+          <li>Opção “só no Wi-Fi” para economizar dados.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grade">
+      <div class="cartao"><div class="icone">🍿</div><h3>Filmes e séries em alta</h3><p>Fileiras do Stremio (Cinemeta), Apple TV/iTunes, Netflix (pelo TMDB) e YouTube em alta, com título e sinopse em português. Abrem direto no app de cada serviço.</p></div>
+      <div class="cartao"><div class="icone">⭐</div><h3>Destaque no topo</h3><p>Um filme ou série em destaque no alto do Início, trocando a cada 5, 8 ou 15 segundos.</p></div>
+      <div class="cartao"><div class="icone">🧩</div><h3>Apps em cores</h3><p>Cada app ganha um card na cor do próprio ícone, ou o banner de Android TV que ele traz. Favoritos no Início e a gaveta completa na aba Apps.</p></div>
+      <div class="cartao"><div class="icone">🖼️</div><h3>Trocar capa</h3><p>Busque artes no libretro, GameTDB, Steam, App Store, Internet Archive ou SteamGridDB — ou use uma foto da galeria.</p></div>
+      <div class="cartao"><div class="icone">🏔️</div><h3>Fundos e descanso de tela</h3><p>Paisagens premiadas do Wikimedia Commons (com crédito), uma foto sua ou cor lisa. O descanso de tela mostra paisagens com relógio.</p></div>
+      <div class="cartao"><div class="icone">🌈</div><h3>Luz e vibração do controle</h3><p>A barra de luz do DualShock 4 / DualSense acompanha a cor do jogo em foco. Vibração curta ao abrir um jogo. Bateria do controle no topo.</p></div>
+      <div class="cartao"><div class="icone">🏆</div><h3>RetroAchievements</h3><p>Com a sua conta, o progresso de conquistas aparece na página de cada ROM.</p></div>
+      <div class="cartao"><div class="icone">📱</div><h3>Chaves pelo celular</h3><p>Em vez de digitar com o controle, escaneie um QR code e cole as chaves no celular. Tudo fica na sua rede Wi-Fi.</p></div>
+      <div class="cartao"><div class="icone">🎨</div><h3>Do seu jeito</h3><p>Tamanho dos cards, arredondamento, colunas, cor de fundo e de destaque (ou automática pelo tema do Android), ordem e visibilidade de cada fileira.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="telas">
+  <div class="largura">
+    <h2>Telas</h2>
+    <p class="intro">Capturas feitas num Galaxy S22+ ligado no controle. Toque numa imagem para ampliar; deslize para o lado para ver mais.</p>
+    <div class="galeria">
+      <figure><img src="img/inicio.png" alt="Início" loading="lazy"><figcaption>Início — destaque, apps favoritos, jogos e filmes</figcaption></figure>
+      <figure><img src="img/jogos.png" alt="Jogos" loading="lazy"><figcaption>Jogos — Android, PlayStation 2 em capa em pé, Switch</figcaption></figure>
+      <figure><img src="img/info-jogo.png" alt="Informações do jogo" loading="lazy"><figcaption>Informações do jogo</figcaption></figure>
+      <figure><img src="img/apps.png" alt="Apps" loading="lazy"><figcaption>Apps — cada um na sua cor</figcaption></figure>
+      <figure><img src="img/trocar-capa.png" alt="Trocar capa" loading="lazy"><figcaption>Trocar capa pelo libretro, Steam ou SteamGridDB</figcaption></figure>
+      <figure><img src="img/configuracoes.png" alt="Configurações" loading="lazy"><figcaption>Configurações em painel lateral</figcaption></figure>
+      <figure><img src="img/descanso.png" alt="Descanso de tela" loading="lazy"><figcaption>Descanso de tela com paisagens do Wikimedia Commons</figcaption></figure>
+      <figure><img src="img/trailer.png" alt="Trailer em tela cheia" loading="lazy"><figcaption>Trailer em tela cheia</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="plataformas">
+  <div class="largura">
+    <h2>Plataformas e emuladores</h2>
+    <p class="intro">A Nova Home não emula nada: ela encontra suas ROMs e abre cada uma no emulador que você já tem instalado. Em Configurações → Emuladores dá para escolher outro, inclusive qualquer app instalado.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Plataforma</th><th>Extensões</th><th>Emuladores reconhecidos</th></tr></thead>
+        <tbody>
+          <tr><td>PlayStation</td><td class="ext">cue, m3u, pbp, chd, iso</td><td>DuckStation, RetroArch</td></tr>
+          <tr><td>PlayStation 2</td><td class="ext">iso, chd, cso, zso, gz, bin</td><td>NetherSX2 / AetherSX2, PCSX2</td></tr>
+          <tr><td>PlayStation 3</td><td class="ext">iso, pkg, chd</td><td>aPS3e, RPCS3</td></tr>
+          <tr><td>PlayStation 4</td><td class="ext">pkg</td><td>shadPS4, Kyty</td></tr>
+          <tr><td>PSP</td><td class="ext">iso, cso, pbp, chd</td><td>PPSSPP / PPSSPP Gold</td></tr>
+          <tr><td>PS Vita</td><td class="ext">vpk, zip</td><td>Vita3K</td></tr>
+          <tr><td>Nintendo Switch</td><td class="ext">nsp, xci, nsz, xcz</td><td>Eden, Yuzu, Sudachi, Citron, Suyu, Torzu, EggNS</td></tr>
+          <tr><td>Wii U</td><td class="ext">wua, wud, wux, rpx</td><td>Cemu</td></tr>
+          <tr><td>GameCube / Wii</td><td class="ext">iso, rvz, wbfs, gcm, wia, ciso</td><td>Dolphin, Dolphin MMJR</td></tr>
+          <tr><td>Nintendo 3DS</td><td class="ext">3ds, cia, cci, cxi</td><td>Azahar, Lime3DS, Citra</td></tr>
+          <tr><td>Nintendo DS</td><td class="ext">nds, zip, 7z</td><td>melonDS, DraStic, RetroArch</td></tr>
+          <tr><td>Nintendo 64</td><td class="ext">n64, z64, v64, zip, 7z</td><td>RetroArch</td></tr>
+          <tr><td>Game Boy / Color / Advance</td><td class="ext">gb, gbc, gba, zip, 7z</td><td>RetroArch</td></tr>
+          <tr><td>Super Nintendo · NES</td><td class="ext">sfc, smc, nes, zip, 7z</td><td>RetroArch</td></tr>
+          <tr><td>Mega Drive</td><td class="ext">md, gen, smd, bin, zip, 7z</td><td>RetroArch</td></tr>
+          <tr><td>Dreamcast</td><td class="ext">cdi, gdi, chd</td><td>Flycast, Redream, Reicast</td></tr>
+          <tr><td>Xbox 360</td><td class="ext">iso, xex, god, zar</td><td>aX360e, Xenia</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="intro" style="margin-top:16px">As pastas são lidas pelo seletor de arquivos do Android, sem pedir permissão ampla de armazenamento.</p>
+  </div>
+</section>
+
+<section id="fontes">
+  <div class="largura">
+    <h2>De onde vêm as informações</h2>
+    <p class="intro">Só fontes oficiais e públicas, sem scraping. O app funciona completo sem nenhuma chave; as chaves (todas grátis) apenas completam o que falta. Coloque-as em <b>Configurações → Contas e chaves</b>.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Fonte</th><th>Para quê</th><th>Precisa de chave?</th></tr></thead>
+        <tbody>
+          <tr><td>Steam</td><td>Capa, arte larga, logo, sinopse, ficha, prints e trailer de jogos</td><td class="sim">Não</td></tr>
+          <tr><td>Wikipédia / Wikidata</td><td>Resumo e ficha de jogos; títulos e sinopses em português</td><td class="sim">Não</td></tr>
+          <tr><td>libretro-thumbnails</td><td>Tela-título, caixa e prints das ROMs (o banco do RetroArch)</td><td class="sim">Não</td></tr>
+          <tr><td>GameTDB</td><td>Capas de Wii, GameCube, Wii U, 3DS, DS, Switch e PS3</td><td class="sim">Não</td></tr>
+          <tr><td>Internet Archive · App Store</td><td>Capas escaneadas e artes de jogos mobile</td><td class="sim">Não</td></tr>
+          <tr><td>Stremio (Cinemeta)</td><td>Filmes e séries populares, lançamentos e por gênero</td><td class="sim">Não</td></tr>
+          <tr><td>Apple (iTunes)</td><td>Filmes em alta na loja do país, com trailer</td><td class="sim">Não</td></tr>
+          <tr><td>Wikimedia Commons</td><td>Paisagens de fundo e do descanso de tela (CC BY-SA, com crédito)</td><td class="sim">Não</td></tr>
+          <tr><td>TMDB</td><td>Filmes e séries em português, fileiras da Netflix, trailers dublados</td><td>Sim — grátis em themoviedb.org</td></tr>
+          <tr><td>SteamGridDB</td><td>Capas, logos e artes que as fontes livres não têm</td><td>Sim — grátis em steamgriddb.com</td></tr>
+          <tr><td>YouTube Data API</td><td>Trailers de jogos fora da Steam e “Em alta no YouTube”</td><td>Sim — grátis no Google Cloud Console</td></tr>
+          <tr><td>RetroAchievements</td><td>Progresso das suas conquistas nas ROMs</td><td>Sim — sua conta e chave de API da Web</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grade" style="margin-top:24px">
+      <div class="cartao"><h3>🔒 Privacidade</h3><p>Nenhuma chave vem dentro do APK público. As suas ficam só no aparelho. O app não tem conta, anúncios nem coleta de dados, e só pede Internet e o estado da rede (para o “só no Wi-Fi”).</p></div>
+      <div class="cartao"><h3>📶 QR code local</h3><p>“Colocar pelo celular” abre uma página só na sua rede, com um endereço secreto novo a cada vez, que fecha sozinha depois de salvar.</p></div>
+      <div class="cartao"><h3>💾 Tudo em cache</h3><p>Capas, informações e trailers ficam guardados (de 24 h a 30 dias, conforme a fonte), e as imagens têm um cache em disco de ~50 MB.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="controle">
+  <div class="largura">
+    <h2>Atalhos do controle</h2>
+    <p class="intro">Funciona com qualquer controle Bluetooth ou USB. Toque na tela também funciona.</p>
+    <div class="teclas">
+      <div class="tecla"><kbd>R1 / L1</kbd><span>Próxima aba / aba anterior</span></div>
+      <div class="tecla"><kbd>R2 / L2</kbd><span>Pula vários cards (segure para ir rápido)</span></div>
+      <div class="tecla"><kbd>Start</kbd><span>Configurações</span></div>
+      <div class="tecla"><kbd>Select</kbd><span>Pesquisar</span></div>
+      <div class="tecla"><kbd>□ / X</kbd><span>Informações do jogo</span></div>
+      <div class="tecla"><kbd>△ / Y</kbd><span>Opções do card (renomear, capa, mover, esconder)</span></div>
+      <div class="tecla"><kbd>◀</kbd><span>No primeiro card: subir, descer ou esconder a fileira</span></div>
+      <div class="tecla"><kbd>Qualquer</kbd><span>Sai da tela cheia do trailer ou do descanso</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="instalar">
+  <div class="largura">
+    <h2>Como instalar</h2>
+    <ol class="passos">
+      <li><strong>Baixe o APK</strong> na página de <a href="https://github.com/Breno12276/NovaHome/releases/latest">versões (Releases)</a>. Use o arquivo <code>NovaHome-X.Y-publico.apk</code>.</li>
+      <li><strong>Instale</strong> permitindo “instalar apps desconhecidos” para o navegador ou gerenciador de arquivos. Precisa de Android 13 ou mais novo.</li>
+      <li><strong>Abra pela gaveta</strong> para experimentar. Instalar não troca a sua tela inicial.</li>
+      <li><strong>Para usar como tela inicial</strong>, vá em Configurações → Sistema → “Tela inicial padrão do celular” e escolha Nova Home. O mesmo lugar serve para voltar ao One UI Home ou outro launcher.</li>
+      <li><strong>Adicione as pastas de ROMs</strong> em Configurações → Jogos → Pastas de ROMs e, se quiser, as chaves em Contas e chaves.</li>
+    </ol>
+
+    <h3 style="margin-top:40px">Compilar a partir do código</h3>
+    <p class="intro" style="margin-bottom:12px">Projeto Android em Kotlin (compileSdk 36, minSdk 33, Java 17). Há duas variantes: <code>publico</code>, sem chaves, para distribuir; e <code>pessoal</code>, que embute as chaves de um arquivo <code>segredos.properties</code> fora do Git.</p>
+<pre>./gradlew assemblePublicoRelease
+# APK em app/build/outputs/apk/publico/release/</pre>
+    <p class="intro" style="margin-bottom:12px">Para a variante pessoal, crie <code>segredos.properties</code> na raiz (ele já está no <code>.gitignore</code>):</p>
+<pre>TMDB_KEY=...
+STEAMGRIDDB_KEY=...
+YOUTUBE_KEY=...</pre>
+  </div>
+</section>
+
+<section id="versoes">
+  <div class="largura">
+    <h2>Histórico</h2>
+    <p class="intro">Da 1.0 (85 KB) à 3.1 (~420 KB), 23 versões.</p>
+    <div class="linha-tempo">
+      <div class="versao"><b>3.1 — atual</b><p>Passa a ter duas variantes: a <b>pública</b>, sem nenhuma chave dentro, feita para distribuir, e a pessoal. Cada pessoa coloca as próprias chaves em Contas e chaves.</p></div>
+      <div class="versao"><b>2.0 – 3.0</b><p>11 versões (237 KB → 295 KB).</p></div>
+      <div class="versao"><b>1.0 – 1.9</b><p>10 versões, a primeira com 85 KB.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="largura">
+    <p>Nova Home é um projeto pessoal, sem relação com o Google, a Sony, a Nintendo, a Valve ou qualquer serviço citado. As marcas e artes mostradas pertencem aos seus titulares.</p>
+    <p>Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB. Paisagens: Wikimedia Commons (CC BY-SA), com crédito em cada foto.</p>
+  </div>
+</footer>
+
+<div id="zoom"><img alt=""></div>
+<script>
+  const zoom = document.getElementById('zoom');
+  document.querySelectorAll('.galeria img, .destaque img, .tela-principal img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      zoom.querySelector('img').src = img.src;
+      zoom.querySelector('img').alt = img.alt;
+      zoom.classList.add('aberto');
+    });
+  });
+  zoom.addEventListener('click', () => zoom.classList.remove('aberto'));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') zoom.classList.remove('aberto'); });
+</script>
+</body>
+</html>

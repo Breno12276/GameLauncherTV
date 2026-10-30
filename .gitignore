@@ -3,3 +3,9 @@ build/
 app/build/
 local.properties
 segredos.properties
+.kotlin/
+.claude/
+# APKs vão para as Releases; capturas de teste ficam só no computador.
+apk/
+capturas/
+/MainActivity.kt
