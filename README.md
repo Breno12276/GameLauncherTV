@@ -4,8 +4,8 @@ Tela inicial para Android no estilo do Android TV, feita para usar com controle:
 
 ![Tela Início](docs/img/inicio.png)
 
-**Página do projeto:** https://SEU-USUARIO.github.io/NovaHome/
-**Baixar:** [última versão](https://github.com/SEU-USUARIO/NovaHome/releases/latest) — use o `NovaHome-X.Y-publico.apk` (Android 13+).
+**Página do projeto:** https://Breno12276.github.io/NovaHome/
+**Baixar:** [última versão](https://github.com/Breno12276/NovaHome/releases/latest) — use o `NovaHome-X.Y-publico.apk` (Android 13+).
 
 ## Recursos
 
