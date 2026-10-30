@@ -43,8 +43,14 @@ object Roms {
     /** Como cada emulador recebe o jogo. */
     private enum class Modo { BOOTPATH, VIEW, DOLPHIN, GENERICO }
 
-    /** Emulador conhecido: pacotes possíveis, plataformas e a tela que abre o jogo direto. */
-    private class Conhecido(val pacotes: List<String>, val sistemas: Set<Sistema>, val modo: Modo, val atividade: String? = null)
+    /**
+     * Emulador conhecido: pacotes possíveis, plataformas e a tela que abre o jogo direto.
+     * [reserva]: só serve de último recurso (o GameHub emula Windows; Eden/Yuzu e afins vêm antes dele no Switch).
+     */
+    private class Conhecido(
+        val pacotes: List<String>, val sistemas: Set<Sistema>, val modo: Modo, val atividade: String? = null,
+        val reserva: Boolean = false,
+    )
 
     private val RETRO = setOf(Sistema.NES, Sistema.SNES, Sistema.GB, Sistema.GBA, Sistema.MD, Sistema.N64, Sistema.NDS, Sistema.PS1)
 
@@ -61,7 +67,7 @@ object Roms {
         Conhecido(listOf("io.github.lime3ds.android", "org.citra.citra_emu", "org.citra.emu"), setOf(Sistema.N3DS), Modo.VIEW),
         Conhecido(listOf("me.magnum.melonds"), setOf(Sistema.NDS), Modo.VIEW),
         Conhecido(listOf("com.dsemu.drastic"), setOf(Sistema.NDS), Modo.VIEW),
-        Conhecido(listOf("com.xiaoji.egggame"), setOf(Sistema.SWITCH), Modo.GENERICO),
+        Conhecido(listOf("com.xiaoji.egggame"), setOf(Sistema.SWITCH), Modo.GENERICO, reserva = true),
         Conhecido(listOf("org.vita3k.emulator"), setOf(Sistema.VITA), Modo.GENERICO),
         Conhecido(listOf("info.cemu.cemu", "info.cemu.Cemu"), setOf(Sistema.WIIU), Modo.GENERICO),
         Conhecido(listOf("com.flycast.emulator", "io.recompiled.redream"), setOf(Sistema.DC), Modo.GENERICO),
@@ -79,7 +85,7 @@ object Roms {
         Sistema.X360 to listOf("ax360e", "x360", "xenia", "xbox360"),
         Sistema.WIIU to listOf("cemu"),
         Sistema.DC to listOf("flycast", "redream", "reicast"),
-        Sistema.SWITCH to listOf("eden", "yuzu", "sudachi", "citron", "suyu", "torzu"),
+        Sistema.SWITCH to listOf("eden", "yuzu", "sudachi", "citron", "suyu", "torzu", "kenji", "ryujinx", "skyline", "strato"),
         Sistema.PS2 to listOf("aethersx2", "nethersx2", "pcsx2"),
         Sistema.N3DS to listOf("azahar", "citra", "lime3ds"),
     )
@@ -98,11 +104,13 @@ object Roms {
     private fun prefs(ctx: Context) = ctx.getSharedPreferences("nova_home", Context.MODE_PRIVATE)
 
     /** Emuladores instalados que servem para a plataforma, na ordem de preferência. */
-    fun candidatos(ctx: Context, sistema: Sistema): List<String> =
-        (CONHECIDOS.filter { sistema in it.sistemas }.flatMap { it.pacotes }.filter { instalado(ctx, it) } +
-            porPalavra(ctx, sistema) +
+    fun candidatos(ctx: Context, sistema: Sistema): List<String> {
+        val (reservas, principais) = CONHECIDOS.filter { sistema in it.sistemas }.partition { it.reserva }
+        fun instalados(l: List<Conhecido>) = l.flatMap { it.pacotes }.filter { instalado(ctx, it) }
+        return (instalados(principais) + porPalavra(ctx, sistema) + instalados(reservas) +
             // App escolhido à mão em "Outro app instalado…" (qualquer um, mesmo desconhecido).
             listOfNotNull(escolhido(ctx, sistema)?.takeIf { instalado(ctx, it) })).distinct()
+    }
 
     /** Todos os apps instalados (para "Outro app instalado…"), os que parecem emuladores primeiro. */
     fun todosOsApps(ctx: Context): List<String> {
@@ -112,6 +120,22 @@ object Roms {
     }
 
     fun escolhido(ctx: Context, sistema: Sistema): String? = prefs(ctx).getString("emu_${sistema.name}", null)
+
+    /**
+     * Uma vez só: versões antigas deixavam o GameHub como emulador de Switch. Se houver um emulador de Switch de
+     * verdade instalado, essa escolha volta para "Automático" (a pessoa ainda pode escolher o GameHub de novo).
+     */
+    fun corrigirReservas(ctx: Context) {
+        val p = prefs(ctx)
+        if (p.getBoolean("reserva_corrigida", false)) return
+        val e = p.edit().putBoolean("reserva_corrigida", true)
+        for (sistema in Sistema.entries) {
+            val atual = escolhido(ctx, sistema) ?: continue
+            val reservas = CONHECIDOS.filter { sistema in it.sistemas && it.reserva }.flatMap { it.pacotes }
+            if (atual in reservas && candidatos(ctx, sistema).any { it !in reservas }) e.remove("emu_${sistema.name}")
+        }
+        e.apply()
+    }
 
     fun escolher(ctx: Context, sistema: Sistema, pacote: String?) {
         prefs(ctx).edit().apply { if (pacote == null) remove("emu_${sistema.name}") else putString("emu_${sistema.name}", pacote) }.apply()

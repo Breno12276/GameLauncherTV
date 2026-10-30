@@ -189,6 +189,7 @@ class MainActivity : Activity() {
         prefs = getSharedPreferences("nova_home", MODE_PRIVATE)
         personalizado = getSharedPreferences("personalizado", MODE_PRIVATE)
         Chaves.iniciar(this)
+        Roms.corrigirReservas(this)
         // Cor de fundo antes de montar a tela (padrão: automática, pelo tema do Android).
         Paleta.definirFundo(this, prefs.getInt("cor_fundo", 0))
         Paleta.definirDestaque(this, prefs.getInt("cor_destaque", 0))

@@ -20,8 +20,8 @@ android {
         applicationId = "com.exemplo.novahome"
         minSdk = 33
         targetSdk = 36
-        versionCode = 31
-        versionName = "3.1"
+        versionCode = 32
+        versionName = "3.2"
     }
 
     // "pessoal": com as chaves do segredos.properties (só para os seus aparelhos).
