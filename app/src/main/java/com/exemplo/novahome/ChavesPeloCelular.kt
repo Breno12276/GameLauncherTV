@@ -120,7 +120,7 @@ class ChavesPeloCelular(private val ctx: Context, private val aoSalvar: (String)
             "<fieldset><legend>${sv.nome}</legend><p>${esc(sv.onde)}</p>$usuario" +
                 "<input name=\"${sv.pref}\" placeholder=\"Cole a chave aqui\" autocomplete=\"off\" autocapitalize=\"none\" spellcheck=\"false\"></fieldset>"
         }
-        return pagina("Chaves do Nova Home",
+        return pagina("Chaves do GameLauncherTV",
             "<p>Cole só as que quiser. Cada chave é testada antes de ser guardada na TV. Esta página só existe na sua rede, " +
                 "enquanto o QR code estiver na tela.</p><form method=\"post\">$campos<button>Enviar para a TV</button></form>")
     }
@@ -139,7 +139,7 @@ class ChavesPeloCelular(private val ctx: Context, private val aoSalvar: (String)
     private fun esc(t: String) = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
 
     private fun responder(sock: Socket, status: Int, html: String) {
-        val corpo = html.let { if (it.trimStart().startsWith("<!doctype")) it else pagina("Nova Home", it) }.toByteArray(Charsets.UTF_8)
+        val corpo = html.let { if (it.trimStart().startsWith("<!doctype")) it else pagina("GameLauncherTV", it) }.toByteArray(Charsets.UTF_8)
         val texto = when (status) { 200 -> "OK"; 404 -> "Not Found"; else -> "Bad Request" }
         val cab = "HTTP/1.1 $status $texto\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: ${corpo.size}\r\n" +
             "Cache-Control: no-store\r\nConnection: close\r\n\r\n"

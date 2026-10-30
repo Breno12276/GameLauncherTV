@@ -9,3 +9,7 @@ segredos.properties
 apk/
 capturas/
 /MainActivity.kt
+
+# Chave de upload da Play Store (nunca no Git).
+chave-upload.jks
+assinatura.properties

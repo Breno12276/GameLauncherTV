@@ -1902,7 +1902,7 @@ class MainActivity : Activity() {
             abrir(Intent(Settings.ACTION_HOME_SETTINGS))
         }
         p.acao("Configurações do Android", null, "Abrir") { abrir(Intent(Settings.ACTION_SETTINGS)) }
-        p.nota("Nova Home ${BuildConfig.VERSION_NAME} · versão ${if (BuildConfig.FLAVOR == "pessoal") "pessoal" else "pública"}.\n" +
+        p.nota("GameLauncherTV ${BuildConfig.VERSION_NAME} · versão ${if (BuildConfig.FLAVOR == "pessoal") "pessoal" else "pública"}.\n" +
             "Filmes e séries: TMDB (este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB) e Stremio (Cinemeta).\n" +
             "Jogos: Steam, Wikipédia, libretro-thumbnails e SteamGridDB. Paisagens: Wikimedia Commons (CC BY-SA, crédito em cada foto).\n" +
             "As marcas pertencem aos seus titulares.")

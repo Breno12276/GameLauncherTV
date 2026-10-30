@@ -17,7 +17,7 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="Nova Home"
+        android:label="GameLauncherTV"
         android:supportsRtl="true"
         android:theme="@style/Tema">
 

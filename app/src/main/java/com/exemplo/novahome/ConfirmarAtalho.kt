@@ -31,7 +31,7 @@ class ConfirmarAtalho : Activity() {
             info.`package`
         }
         AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Adicionar à Nova Home?")
+            .setTitle("Adicionar ao GameLauncherTV?")
             .setMessage("\"$nome\" ($app) vai aparecer na aba Jogos, em \"Jogos do $app\".")
             .setPositiveButton("Adicionar") { _, _ ->
                 val ok = try { pedido.accept() } catch (_: Exception) { false }

@@ -12,12 +12,18 @@ val segredos = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
+// Chave de upload da Play Store, em assinatura.properties (fora do Git). Sem o arquivo, o release usa a chave debug.
+val assinatura = Properties().apply {
+    val f = rootProject.file("assinatura.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 android {
     namespace = "com.exemplo.novahome"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.exemplo.novahome"
+        applicationId = "com.gamelaunchertv.app"
         minSdk = 33
         targetSdk = 36
         versionCode = 32
@@ -42,6 +48,15 @@ android {
         }
     }
 
+    signingConfigs {
+        if (assinatura.getProperty("arquivo") != null) create("upload") {
+            storeFile = rootProject.file(assinatura.getProperty("arquivo"))
+            storePassword = assinatura.getProperty("senha")
+            keyAlias = assinatura.getProperty("alias")
+            keyPassword = assinatura.getProperty("senha")
+        }
+    }
+
     buildFeatures {
         buildConfig = true
     }
@@ -51,7 +66,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("upload") ?: signingConfigs.getByName("debug")
         }
     }
 
