@@ -65,7 +65,8 @@
   .marca { font-weight: 700; font-size: 19px; color: var(--texto); text-decoration: none; display: flex; align-items: center; gap: 10px; }
   .pontos { display: inline-flex; gap: 3px; }
   .pontos i { width: 7px; height: 7px; border-radius: 50%; display: block; }
-  nav.abas { display: flex; gap: 22px; margin-left: auto; overflow-x: auto; }
+  nav.abas { display: flex; gap: 22px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+  nav.abas::-webkit-scrollbar { display: none; }
   nav.abas a { color: var(--texto-2); text-decoration: none; white-space: nowrap; font-size: 15px; padding: 18px 0; border-bottom: 2px solid transparent; }
   nav.abas a:hover { color: var(--texto); border-color: var(--texto); }
 
@@ -118,6 +119,13 @@
     .destaque.inverso figure { order: 0; }
   }
 
+  .temas { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+  .tema { margin: 0; background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; }
+  .tema img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; cursor: zoom-in; }
+  .tema figcaption { padding: 14px 16px 16px; }
+  .tema b { display: block; font-size: 17px; color: var(--texto); margin-bottom: 4px; }
+  .tema span { color: var(--texto-2); font-size: 15px; }
+  @media (max-width: 420px) { .temas { grid-template-columns: 1fr; } }
   .galeria { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
   .galeria figure { margin: 0; flex: 0 0 min(560px, 85vw); scroll-snap-align: start; }
   .galeria img { border-radius: 10px; border: 1px solid var(--borda); cursor: zoom-in; }
@@ -294,14 +302,14 @@
   <div class="largura">
     <h2>Temas de console</h2>
     <p class="intro">Em Configurações → Temas e sons → Tela inicial, o app inteiro muda de cara: tela inicial, biblioteca, “todos os apps”, busca, configurações, opções do jogo, informações, janelas e o menu rápido passam a seguir o jeito de cada console. Tudo é desenhado pelo app, imitando só a organização de cada um, sem logos, ícones, sons ou fontes das fabricantes.</p>
-    <div class="galeria">
-      <figure><img src="img/inicio.png" alt="Tema Android TV" loading="lazy"><figcaption>Android TV: fileiras e destaque no topo (padrão)</figcaption></figure>
-      <figure><img src="img/tema-ps4.jpg" alt="Tema estilo PS4" loading="lazy"><figcaption>Estilo PS4: fileira de blocos e biblioteca com categorias</figcaption></figure>
-      <figure><img src="img/tema-ps5.jpg" alt="Tema estilo PS5" loading="lazy"><figcaption>Estilo PS5: abas Jogos e Mídia, arte do jogo na tela toda</figcaption></figure>
-      <figure><img src="img/tema-xbox360.jpg" alt="Tema estilo Xbox 360" loading="lazy"><figcaption>Estilo Xbox 360: categorias e blocos verdes</figcaption></figure>
-      <figure><img src="img/tema-series.jpg" alt="Tema estilo Xbox Series" loading="lazy"><figcaption>Estilo Xbox Series: acesso rápido e jogados recentemente</figcaption></figure>
-      <figure><img src="img/tema-switch.jpg" alt="Tema estilo Switch" loading="lazy"><figcaption>Estilo Switch: quadrados grandes e botões redondos</figcaption></figure>
-      <figure><img src="img/tema-wii.jpg" alt="Tema estilo Wii" loading="lazy"><figcaption>Estilo Wii: canais em grade e relógio embaixo</figcaption></figure>
+    <div class="temas">
+      <figure class="tema"><img src="img/inicio.png" alt="Tela inicial do GameLauncherTV no tema Android TV" loading="lazy" width="1280" height="720"><figcaption><b>Android TV</b><span>O padrão: destaque de filme no topo e fileiras de apps, jogos e filmes.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-ps4.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo PS4" loading="lazy" width="1280" height="720"><figcaption><b>Estilo PS4</b><span>Fileira de blocos com o jogo em destaque, biblioteca com categorias e fundo azul com ondas.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-ps5.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo PS5" loading="lazy" width="1280" height="720"><figcaption><b>Estilo PS5</b><span>Abas Jogos e Mídia, a arte do jogo ocupando a tela e o botão Jogar.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-xbox360.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo Xbox 360" loading="lazy" width="1280" height="720"><figcaption><b>Estilo Xbox 360</b><span>Categorias em cima e blocos grandes e verdes, como o painel de 2011.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-series.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo Xbox Series" loading="lazy" width="1280" height="720"><figcaption><b>Estilo Xbox Series</b><span>Acesso rápido, jogados recentemente com o primeiro bloco maior e apps fixados.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-switch.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo Switch" loading="lazy" width="1280" height="720"><figcaption><b>Estilo Switch</b><span>Tema claro com quadrados grandes e botões redondos coloridos embaixo.</span></figcaption></figure>
+      <figure class="tema"><img src="img/tema-wii.jpg" alt="Tela inicial do GameLauncherTV no tema Estilo Wii" loading="lazy" width="1280" height="720"><figcaption><b>Estilo Wii</b><span>Canais numa grade com páginas e o relógio grande na faixa de baixo.</span></figcaption></figure>
     </div>
     <div class="grade" style="margin-top:24px">
       <div class="cartao"><div class="icone">🟦</div><h3>Capas no formato de cada tema</h3><p>Quadradas no PS4, PS5, Switch e Xbox Series; banners deitados no Android TV, Xbox 360 e Wii. Ao trocar de tema, as capas que faltam são buscadas sozinhas, e em “Trocar capa” dá para escolher a quadrada à mão.</p></div>
@@ -471,7 +479,7 @@ YOUTUBE_KEY=...</pre>
 <div id="zoom"><img alt=""></div>
 <script>
   const zoom = document.getElementById('zoom');
-  document.querySelectorAll('.galeria img, .destaque img, .tela-principal img').forEach(img => {
+  document.querySelectorAll('.galeria img, .destaque img, .tela-principal img, .tema img').forEach(img => {
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', () => {
       zoom.querySelector('img').src = img.src;
