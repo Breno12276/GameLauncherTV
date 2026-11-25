@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Janelas (diálogos) no estilo PS4: azul-escuro com borda clara fina. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android" android:inset="16dp">
+    <shape android:shape="rectangle">
+        <gradient android:angle="270" android:startColor="#F2163A80" android:endColor="#F20A1B42" />
+        <stroke android:width="1dp" android:color="#806E95D8" />
+    </shape>
+</inset>

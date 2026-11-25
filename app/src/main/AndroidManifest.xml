@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Pôsteres e catálogo do TMDB. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- "Trailers só no Wi-Fi": saber se a conexão atual é Wi-Fi. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Recursos root (opcionais): serviço que segue de pé com um jogo na frente (carregamento e botões do controle)
+         e o menu rápido por cima do jogo. A permissão de sobrepor é dada com root ao ligar os recursos. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Menu rápido: trazer de volta o jogo aberto (PS no launcher, "Apps abertos") e listar os aparelhos
+         Bluetooth (permissão dada com root ao ligar os recursos). -->
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Sem root: "Fechar o jogo" e "Liberar memória" encerram apps em segundo plano. -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <!-- Resolução e densidade sem root: só vale depois de dada pelo PC ("adb shell pm grant … WRITE_SECURE_SETTINGS"). -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <!-- Ajustar o brilho pelo menu rápido sem root (a pessoa permite em "Alterar configurações do sistema"). -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <!-- Não perturbe pelo menu rápido sem root (a pessoa libera o acesso). -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <!-- Para enxergar os apps instaláveis pela gaveta (Android 11+). -->
     <queries>
+        <!-- Gerenciadores de root, para mostrar a seção "Root" das configurações. -->
+        <package android:name="me.weishu.kernelsu" />
+        <package android:name="com.rifsxd.ksunext" />
+        <package android:name="com.topjohnwu.magisk" />
+        <package android:name="io.github.huskydg.magisk" />
+        <package android:name="io.github.vvb2060.magisk" />
+        <package android:name="me.bmax.apatch" />
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <!-- Apps web instalados pelo navegador (jogos na nuvem em tela cheia). -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
         </intent>
     </queries>
 
@@ -21,13 +52,15 @@
         android:supportsRtl="true"
         android:theme="@style/Tema">
 
+        <!-- Redimensionável: trocar a resolução/densidade (Tela do aparelho, Second Screen, PC) só redesenha a tela.
+             Não redimensionável, o Android punha o launcher em modo de compatibilidade e os painéis perdiam o foco. -->
         <activity
             android:name=".MainActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density|fontScale|layoutDirection|locale"
             android:exported="true"
             android:launchMode="singleTask"
-            android:resizeableActivity="false"
+            android:resizeableActivity="true"
             android:screenOrientation="sensorLandscape"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="adjustNothing|stateHidden">
@@ -45,6 +78,38 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".ServicoRoot"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Controle de carga da bateria e atalhos do controle de jogo por cima de outros apps (recursos root do launcher)" />
+        </service>
+
+        <!-- Shizuku: recebe a conexão com o serviço do Shizuku (para liberar a resolução sem PC). -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <!-- Botão PS e menu rápido sem root (a pessoa liga em Acessibilidade). -->
+        <service
+            android:name=".ServicoAcessibilidade"
+            android:exported="true"
+            android:label="@string/acessibilidade_nome"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/acessibilidade" />
+        </service>
 
         <!-- Pedidos de "fixar atalho na tela inicial" (ex.: atalho de jogo do GameHub). -->
         <activity

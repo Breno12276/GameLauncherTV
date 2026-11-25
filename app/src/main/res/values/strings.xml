@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="acessibilidade_nome">Botão PS e menu rápido</string>
+    <string name="acessibilidade_descricao">Deixa o botão PS do controle funcionar por cima de qualquer jogo, como no PS4: apertar alterna entre o jogo e o GameLauncherTV, segurar abre o menu rápido (fechar o jogo, brilho, volume, bateria do controle, captura de tela) e PS + Share fecha o jogo. Ele vê os botões apertados e o nome do app na frente. Fora do modo mouse, só reage ao PS e ao Share (os outros passam direto para o jogo). No modo mouse (ligado por você, app por app, no menu rápido) ele desenha um cursor e toca na tela onde o cursor está; botões que você mapear tocam no lugar gravado. Não lê o que aparece na tela e não guarda nem envia nada.</string>
+</resources>

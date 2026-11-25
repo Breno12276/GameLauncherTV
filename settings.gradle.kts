@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "NovaHome"
+rootProject.name = "GameLauncherTV"
 include(":app")

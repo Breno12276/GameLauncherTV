@@ -19,15 +19,15 @@ val assinatura = Properties().apply {
 }
 
 android {
-    namespace = "com.exemplo.novahome"
+    namespace = "com.gamelaunchertv.app"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.gamelaunchertv.app"
         minSdk = 33
         targetSdk = 36
-        versionCode = 32
-        versionName = "3.2"
+        versionCode = 33
+        versionName = "3.3"
     }
 
     // "pessoal": com as chaves do segredos.properties (só para os seus aparelhos).
@@ -83,4 +83,10 @@ kotlin {
 dependencies {
     // Só para desenhar o QR code de "Colocar chaves pelo celular" (sem rede, sem reflexão).
     implementation("com.google.zxing:core:3.5.3")
+    // Resolução e densidade sem root: libera as chamadas internas do serviço de janelas (o Android 9+ bloqueia
+    // para apps novos); a permissão WRITE_SECURE_SETTINGS continua sendo exigida pelo sistema.
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
+    // Liberar a permissão da resolução sem PC: pelo Shizuku (ligado pela Depuração sem fio do próprio celular).
+    implementation("dev.rikka.shizuku:api:13.1.5")
+    implementation("dev.rikka.shizuku:provider:13.1.5")
 }

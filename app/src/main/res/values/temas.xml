@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diálogos no estilo PS4 (Temas e sons › Tela inicial › Estilo PS4). -->
+    <style name="DialogoPs4" parent="android:Theme.DeviceDefault.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_ps4</item>
+        <item name="android:colorBackground">#0B1A3C</item>
+        <item name="android:colorAccent">#8FDAFF</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#C8D4F0</item>
+        <item name="android:textColorAlertDialogListItem">#FFFFFF</item>
+    </style>
+    <!-- Diálogos no estilo Xbox 360: claros, texto escuro, destaque verde. -->
+    <style name="DialogoXbox" parent="android:Theme.DeviceDefault.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_xbox</item>
+        <item name="android:colorBackground">#F2F3F4</item>
+        <item name="android:colorAccent">#107C10</item>
+        <item name="android:textColorPrimary">#2A2D30</item>
+        <item name="android:textColorSecondary">#5F656B</item>
+        <item name="android:textColorAlertDialogListItem">#2A2D30</item>
+    </style>
+    <!-- Diálogos no estilo Switch: claros, destaque azul-claro. -->
+    <style name="DialogoSwitch" parent="android:Theme.DeviceDefault.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_xbox</item>
+        <item name="android:colorBackground">#F2F2F2</item>
+        <item name="android:colorAccent">#00A6C8</item>
+        <item name="android:textColorPrimary">#2D2D2D</item>
+        <item name="android:textColorSecondary">#707070</item>
+        <item name="android:textColorAlertDialogListItem">#2D2D2D</item>
+    </style>
+    <!-- Diálogos no estilo Wii: claros, destaque azul. -->
+    <style name="DialogoWii" parent="android:Theme.DeviceDefault.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_xbox</item>
+        <item name="android:colorBackground">#F7F9FA</item>
+        <item name="android:colorAccent">#1E9FD8</item>
+        <item name="android:textColorPrimary">#55595C</item>
+        <item name="android:textColorSecondary">#8A9198</item>
+        <item name="android:textColorAlertDialogListItem">#55595C</item>
+    </style>
+    <!-- Diálogos no estilo PS5: escuros, arredondados. -->
+    <style name="DialogoPs5" parent="android:Theme.DeviceDefault.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_ps5</item>
+        <item name="android:colorBackground">#1A1C22</item>
+        <item name="android:colorAccent">#FFFFFF</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#B4B8C2</item>
+        <item name="android:textColorAlertDialogListItem">#FFFFFF</item>
+    </style>
+    <!-- Diálogos no estilo Xbox Series: cinza-escuro, destaque verde. -->
+    <style name="DialogoSeries" parent="android:Theme.DeviceDefault.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/fundo_dialogo_series</item>
+        <item name="android:colorBackground">#242629</item>
+        <item name="android:colorAccent">#3DBB3D</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#AEB2B6</item>
+        <item name="android:textColorAlertDialogListItem">#FFFFFF</item>
+    </style>
+</resources>

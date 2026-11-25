@@ -1,4 +1,4 @@
-<h1 align="center">Nova Home</h1>
+<h1 align="center">GameLauncherTV</h1>
 
 <p align="center">
   <b>Seu celular com cara de console.</b><br>
@@ -7,15 +7,15 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Breno12276/NovaHome/releases/latest"><b>⬇ Baixar o APK</b></a> ·
-  <a href="https://breno12276.github.io/NovaHome/">Site</a> ·
+  <a href="https://github.com/Breno12276/GameLauncherTV/releases/latest"><b>⬇ Baixar o APK</b></a> ·
+  <a href="https://breno12276.github.io/GameLauncherTV/">Site</a> ·
   <a href="#-recursos">Recursos</a> ·
   <a href="#-plataformas">Plataformas</a> ·
   <a href="#-como-instalar">Como instalar</a>
 </p>
 
 <p align="center">
-  <img src="docs/img/inicio.png" alt="Tela Início da Nova Home" width="900">
+  <img src="docs/img/inicio.png" alt="Tela Início do GameLauncherTV" width="900">
 </p>
 
 <p align="center">
@@ -62,7 +62,7 @@ E também:
 
 ## 🕹️ Plataformas
 
-A Nova Home não emula nada: ela encontra suas ROMs e abre cada uma no emulador que você já tem.
+O GameLauncherTV não emula nada: ele encontra suas ROMs e abre cada uma no emulador que você já tem.
 
 | Plataforma | Emuladores reconhecidos |
 |---|---|
@@ -101,10 +101,10 @@ As chaves ficam só no seu aparelho. O APK público não traz nenhuma chave.
 
 ## 📲 Como instalar
 
-1. Baixe o `NovaHome-X.Y-publico.apk` na [última versão](https://github.com/Breno12276/NovaHome/releases/latest).
+1. Baixe o `GameLauncherTV-X.Y-publico.apk` na [última versão](https://github.com/Breno12276/GameLauncherTV/releases/latest).
 2. Instale, permitindo "instalar apps desconhecidos".
 3. Abra pela gaveta de apps para experimentar.
-4. Para virar a tela inicial: **Configurações → Sistema → Tela inicial padrão do celular** → Nova Home.
+4. Para virar a tela inicial: **Configurações → Sistema → Tela inicial padrão do celular** → GameLauncherTV.
 
 ## 🛠️ Compilar
 
