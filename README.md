@@ -10,6 +10,8 @@
   <a href="https://github.com/Breno12276/GameLauncherTV/releases/latest"><b>⬇ Baixar o APK</b></a> ·
   <a href="https://breno12276.github.io/GameLauncherTV/">Site</a> ·
   <a href="#-recursos">Recursos</a> ·
+  <a href="#-temas-de-console">Temas</a> ·
+  <a href="#-menu-rápido-por-cima-do-jogo">Menu rápido</a> ·
   <a href="#-plataformas">Plataformas</a> ·
   <a href="#-como-instalar">Como instalar</a>
 </p>
@@ -19,7 +21,7 @@
 </p>
 
 <p align="center">
-  Android 13+ · APK de ~420 KB · sem anúncios · sem cadastro · funciona sem chave de API
+  Android 13+ · APK de ~770 KB · 7 temas de console · sem anúncios · sem cadastro · funciona sem chave de API
 </p>
 
 ---
@@ -53,12 +55,73 @@
   </tr>
 </table>
 
+## 🎮 Temas de console
+
+Em **Configurações → Temas e sons → Tela inicial**, o app inteiro muda de cara: tela inicial, biblioteca, todos os apps, busca, configurações, opções e informações do jogo, janelas e o menu rápido. Tudo é desenhado pelo app, imitando só a organização de cada console, sem logos, ícones, sons ou fontes das fabricantes.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/img/tema-ps4.jpg" alt="Estilo PS4"></td>
+    <td width="50%"><img src="docs/img/tema-ps5.jpg" alt="Estilo PS5"></td>
+  </tr>
+  <tr>
+    <td><b>Estilo PS4</b>: fileira de blocos, biblioteca com categorias, fundo azul com ondas.</td>
+    <td><b>Estilo PS5</b>: abas Jogos e Mídia, arte do jogo na tela toda, botão Jogar.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/img/tema-xbox360.jpg" alt="Estilo Xbox 360"></td>
+    <td><img src="docs/img/tema-series.jpg" alt="Estilo Xbox Series"></td>
+  </tr>
+  <tr>
+    <td><b>Estilo Xbox 360</b>: categorias e blocos verdes.</td>
+    <td><b>Estilo Xbox Series</b>: acesso rápido, jogados recentemente e apps fixados.</td>
+  </tr>
+  <tr>
+    <td><img src="docs/img/tema-switch.jpg" alt="Estilo Switch"></td>
+    <td><img src="docs/img/tema-wii.jpg" alt="Estilo Wii"></td>
+  </tr>
+  <tr>
+    <td><b>Estilo Switch</b>: quadrados grandes e botões redondos coloridos.</td>
+    <td><b>Estilo Wii</b>: canais em grade e relógio na faixa de baixo.</td>
+  </tr>
+</table>
+
+As capas acompanham o tema: **quadradas** no PS4, PS5, Switch e Xbox Series, **banners** no Android TV, Xbox 360 e Wii. Ao trocar de tema, as que faltam são buscadas sozinhas.
+
+## ☰ Opções de cada jogo
+
+<img src="docs/img/opcoes-jogo.jpg" alt="Opções de um jogo no estilo PS4" width="640">
+
+Segure **△ / Y** num jogo: informações, coleções, trocar capa (deitada, em pé ou quadrada) ou arte de fundo, foto da galeria, renomear, restaurar o original, emulador e plataforma da ROM, abrir com outro app, detalhes do arquivo, esconder ou marcar como “só para adultos”.
+
+## ⏏️ Menu rápido por cima do jogo
+
+Com um jogo aberto, **segure o botão PS** e um menu aparece por cima dele, como no console. No topo: o jogo, a bateria do controle e do celular, a hora, a temperatura e a memória. Funciona sem root, pelo serviço de acessibilidade (ligado uma vez); com root, ganha mais opções.
+
+| Página | O que tem |
+|---|---|
+| Jogo | Voltar ao jogo, ir para o início, fechar o jogo, capturar ou gravar a tela, modo mouse, Dormir |
+| Tela e som | Brilho, brilho automático, 120 Hz, desligar a tela, sem som, Não perturbe |
+| Controle | Luz do controle e brilho dela, testar vibração, vibrar ao abrir um jogo |
+| Desempenho | Liberar memória, modo desempenho fixo ou ao abrir jogos (root) |
+| Rede e energia | Wi-Fi, modo avião, Bluetooth, limite da carga (root), reiniciar ou desligar |
+
 E também:
 
 - 🎬 **Trailers automáticos:** pare o foco num jogo ou filme e o trailer toca no fundo; sem mexer no controle, ele vai para tela cheia.
 - 🍿 **Filmes e séries em alta:** fileiras do Stremio, Apple, Netflix (via TMDB) e YouTube, com títulos em português.
 - 🌈 **Luz e vibração do controle:** a barra de luz do DualShock 4 / DualSense acompanha a cor do jogo em foco.
 - 📱 **Chaves pelo celular:** escaneie um QR code e cole as chaves no celular, sem digitar com o controle.
+- 👥 **Perfis e controle parental:** favoritos, coleções, aparência e contas por pessoa; perfis infantis com PIN, limite de tempo por dia e sem jogos “só para adultos”.
+- 📚 **Coleções:** fileiras suas ("Multiplayer", "Zerar"…) com jogos de qualquer plataforma.
+- 📊 **Estatísticas:** tempo jogado hoje, na semana e no total, gráfico dos dias e os jogos mais jogados.
+- ☁️ **Jogos na nuvem:** catálogos do GeForce NOW e do Xbox Cloud Gaming, sem chave.
+- 🟩 **Contas Xbox e Steam:** gamerscore e conquistas pelo OpenXBL; sua biblioteca da Steam e o que dela roda no GeForce NOW.
+- 🖱️ **Modo mouse:** cursor pelo controle e botões mapeados em apps que não aceitam controle.
+- 💾 **Backup:** configurações, capas, histórico e perfis num arquivo; com root, também os saves dos emuladores.
+- ⚙️ **Recursos com root:** limite de carga, modo desempenho, atualizar emuladores pelas releases oficiais. Resolução e densidade também sem root, com uma permissão dada pelo PC.
+- 🌙 **Dormir:** pausa, liga a economia de energia e apaga a tela (a TV entra em espera).
+- 🔊 **Sons de navegação** gerados pelo próprio app, e **clima e temperatura** embaixo do relógio.
 
 ## 🕹️ Plataformas
 
@@ -85,6 +148,9 @@ Qualquer outro emulador pode ser escolhido em **Configurações → Emuladores �
 | Select | Pesquisar |
 | □ / X | Informações do jogo |
 | △ / Y | Opções do card (renomear, capa, mover, esconder) |
+| PS (segurar) | Menu rápido por cima do jogo |
+| PS | Volta para a tela inicial |
+| PS + Share | Fecha o jogo aberto |
 
 ## 🔑 Chaves de API (opcionais)
 
