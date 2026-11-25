@@ -36,9 +36,22 @@ object FontesLivres {
             URLEncoder.encode(nome, "UTF-8") + "&l=english&cc=${Idioma.regiao()}"))
         val itens = busca.optJSONArray("items") ?: return null
         val alvo = normalizar(nome)
-        return (0 until itens.length()).map { itens.getJSONObject(it) }
-            .firstOrNull { normalizar(it.optString("name")) == alvo }?.optInt("id")?.takeIf { it > 0 }
+        val lista = (0 until itens.length()).map { itens.getJSONObject(it) }
+        // Nome idêntico; senão, o mesmo nome com só um sufixo de edição na loja ("Grand Theft Auto V Legacy",
+        // "… Enhanced", "… Definitive Edition"): a loja renomeia jogos antigos e o card ficava sem capa.
+        val jogo = lista.firstOrNull { normalizar(it.optString("name")) == alvo }
+            ?: lista.firstOrNull { o ->
+                val n = normalizar(o.optString("name"))
+                n.startsWith("$alvo ") && n.removePrefix("$alvo ").split(' ').all { it in SUFIXOS_EDICAO }
+            }
+        return jogo?.optInt("id")?.takeIf { it > 0 }
     }
+
+    /** Palavras que a Steam acrescenta ao nome de um jogo sem mudar o jogo. */
+    private val SUFIXOS_EDICAO = setOf(
+        "legacy", "enhanced", "edition", "definitive", "remastered", "complete", "goty", "game", "of", "the", "year",
+        "deluxe", "ultimate", "standard", "classic", "anniversary", "hd", "redux", "directors", "director", "cut", "special",
+    )
 
     /**
      * Endereços das imagens do jogo na loja (API pública da Steam, sem chave). Jogos novos guardam cada

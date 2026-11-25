@@ -3077,6 +3077,10 @@ class MainActivity : Activity() {
             prefs.edit().putBoolean("fonte_capa_so", it == 1).apply()
             refazerCapas(null)
         }
+        p.acao("Procurar as capas que faltam", "Procura de novo os jogos que ficaram sem capa (normalmente só a cada 7 dias).",
+            "Procurar") { procurarCapasAgora(refazer = false) }
+        p.acao("Baixar todas as capas de novo", "Apaga as capas automáticas e baixa todas outra vez pela regra atual. " +
+            "As escolhidas à mão ficam.", "Baixar") { procurarCapasAgora(refazer = true) }
         val global = fontes.getOrElse(prefs.getInt("fonte_capa", 0)) { fontes[0] }
         for ((secao, nome) in secoesDeJogos().filter { it.first == "android" || it.first.startsWith("rom_") }) {
             val atual = prefs.getInt("fonte_capa:$secao", -1)
@@ -3228,6 +3232,34 @@ class MainActivity : Activity() {
      * Fonte preferida mudou: as capas automáticas da plataforma [secao] (ou de todos os jogos, com null) são
      * buscadas de novo na ordem nova. As escolhidas à mão ficam (são guardadas à parte).
      */
+    /**
+     * Botões "Procurar as capas que faltam" / "Baixar todas as capas de novo": busca agora e avisa quantos jogos
+     * ficaram com capa (e o que fazer com os que não ficaram).
+     */
+    private fun procurarCapasAgora(refazer: Boolean) {
+        Toast.makeText(this, "Procurando capas… isso pode levar alguns minutos.", Toast.LENGTH_LONG).show()
+        buscaCapas.execute {
+            if (refazer) Capas.esquecerAutomaticas(this) else Capas.esquecerFaltantes(this)
+            ui.post {
+                if (refazer) {
+                    capas = emptyMap()
+                    descartarTodas()
+                    mostrar(telaAtual)
+                }
+                carregarCapas { com, total ->
+                    val msg = when {
+                        total == 0 -> "Nenhum jogo na lista ainda. Adicione pastas de ROMs ou marque apps como jogos."
+                        com == total -> "Capas prontas: todos os $total jogos têm capa."
+                        com == 0 -> "Nenhuma capa encontrada. Confira a internet e a fonte escolhida em Configurações › Capas."
+                        else -> "Capas: $com de $total jogos. Os outros ${total - com} não estão nas fontes; " +
+                            "escolha em Trocar capa ou mude a fonte."
+                    }
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
     private fun refazerCapas(secao: String?) {
         val nomes = when {
             secao == null -> null
@@ -5790,7 +5822,13 @@ class MainActivity : Activity() {
     }
 
     /** Capas do SteamGridDB para apps favoritos, jogos Android e ROMs; só busca o que ainda não está guardado. */
-    private fun carregarCapas() {
+    /** Fila só das capas: não espera atrás do catálogo de filmes e das recomendações (que podem demorar). */
+    private val buscaCapas = Executors.newSingleThreadExecutor()
+
+    /**
+     * [aoTerminar]: chamado no fim com (jogos com capa, total de jogos) — para "Procurar capas" mostrar o resultado.
+     */
+    private fun carregarCapas(aoTerminar: ((Int, Int) -> Unit)? = null) {
         val banners = favoritosDe(apps).map { val t = Catalogo.nomeParaArte(it); Capas.Pedido(Capas.chaveApp(t), t, exato = true, pacote = it.pacote) } +
             jogosAndroid(apps).map { Capas.Pedido(Capas.chave(it.nome), it.nome) } +
             roms.map { Capas.Pedido(Capas.chave(it.nome), it.nome, it.sistema.anos, arquivo = it.arquivo) } +
@@ -5809,8 +5847,10 @@ class MainActivity : Activity() {
                 roms.map { Capas.Pedido(Capas.chaveQuadrada(it.nome), it.nome, it.sistema.anos, quadrada = true) } +
                 atalhos.map { val n = nomeAtalho(it); Capas.Pedido(Capas.chaveQuadrada(n), n, quadrada = true) }
         val pedidos = banners + emPe + quadradas
-        if (pedidos.isEmpty()) return
-        trabalho.execute {
+        if (pedidos.isEmpty()) { aoTerminar?.invoke(0, 0); return }
+        // Os jogos (sem os logos dos apps): cada um conta como "com capa" se tiver banner, em pé ou quadrada.
+        val jogos = (jogosAndroid(apps).map { it.nome } + roms.map { it.nome } + atalhos.map { nomeAtalho(it) }).distinct()
+        buscaCapas.execute {
             // Uma vez, ao passar a casar pelo nome do arquivo (como o Daijishō): refaz as capas do libretro e as não achadas.
             // De novo ao ganhar os banners das lojas dos consoles (v4).
             if (!prefs.getBoolean("capas_daijisho4", false)) {
@@ -5824,8 +5864,20 @@ class MainActivity : Activity() {
                 prefs.edit().putBoolean("capas_lojas_epoca", true).apply()
             }
             // As que ficam prontas antes (Steam) já aparecem; o resto entra quando chegar.
-            val novas = Capas.buscar(this, pedidos) { parte -> ui.post { aplicarCapas(parte) } }
-            ui.post { aplicarCapas(novas) }
+            val novas = try {
+                Capas.buscar(this, pedidos) { parte -> ui.post { aplicarCapas(parte) } }
+            } catch (e: Exception) {
+                android.util.Log.w("Capas", "busca falhou", e)
+                null
+            }
+            ui.post {
+                novas?.let { aplicarCapas(it) }
+                val comCapa = jogos.count { n ->
+                    val c = novas ?: capas
+                    c[Capas.chave(n)] != null || c[Capas.chavePoster(n)] != null || c[Capas.chaveQuadrada(n)] != null
+                }
+                aoTerminar?.invoke(comCapa, jogos.size)
+            }
         }
     }
 
