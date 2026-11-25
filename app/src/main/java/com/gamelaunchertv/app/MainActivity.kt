@@ -3060,18 +3060,28 @@ class MainActivity : Activity() {
             "se algo vai atrapalhar (2,4 GHz, sinal fraco, latência alta).", listOf("Ligado", "Desligado"),
             if (prefs.getBoolean("teste_nuvem", true)) 0 else 1) { prefs.edit().putBoolean("teste_nuvem", it == 0).apply() }
 
-        // Fonte preferida das capas: tentada primeiro; sem a capa lá, as outras na ordem de sempre.
+        // De onde vêm as capas automáticas: uma fonte para todos os jogos, outra para cada plataforma se quiser,
+        // e se a escolhida vale como a única ou só como a primeira.
+        p.secao("Capas")
         val fontes = Capas.FonteCapa.entries
-        val semChaveSgdb = if (Capas.ativo()) "" else " O SteamGridDB precisa de uma chave (Contas e chaves); sem ela, fica o automático."
-        p.opcoes("Fonte preferida das capas", "Vale para todas as plataformas sem escolha própria. Capas escolhidas à mão não mudam." +
-            semChaveSgdb, fontes.map { it.rotulo }, prefs.getInt("fonte_capa", 0)) {
+        val semChaveSgdb = if (Capas.ativo()) "" else " O SteamGridDB precisa de uma chave (Contas e chaves); sem ela, ele não busca."
+        p.opcoes("Fonte das capas", "De onde baixar as capas de todos os jogos (as plataformas com escolha própria, abaixo, " +
+            "seguem a delas). Capas escolhidas à mão não mudam." + semChaveSgdb, fontes.map { it.rotulo }, prefs.getInt("fonte_capa", 0)) {
             prefs.edit().putInt("fonte_capa", it).apply()
+            refazerCapas(null)
+        }
+        p.opcoes("Se a fonte não tiver a capa", "\"Só da fonte escolhida\" baixa apenas de lá: o jogo que ela não tiver fica sem " +
+            "capa automática (mostra o nome), e dá para escolher uma em Trocar capa. A Steam não tem jogos de consoles " +
+            "antigos, e a loja do console não tem jogos de Android.",
+            listOf("Buscar nas outras fontes", "Só da fonte escolhida"), if (Capas.soDaFonte(this)) 1 else 0) {
+            prefs.edit().putBoolean("fonte_capa_so", it == 1).apply()
             refazerCapas(null)
         }
         val global = fontes.getOrElse(prefs.getInt("fonte_capa", 0)) { fontes[0] }
         for ((secao, nome) in secoesDeJogos().filter { it.first == "android" || it.first.startsWith("rom_") }) {
             val atual = prefs.getInt("fonte_capa:$secao", -1)
-            p.opcoes("Capas: $nome", null, listOf("Usar a global (${global.rotulo.substringBefore(" (")})") + fontes.map { it.rotulo }, atual + 1) {
+            p.opcoes("Capas de $nome", "Fonte só para esta plataforma.",
+                listOf("Igual às outras (${global.rotulo.substringBefore(" (")})") + fontes.map { it.rotulo }, atual + 1) {
                 if (it == 0) prefs.edit().remove("fonte_capa:$secao").apply() else prefs.edit().putInt("fonte_capa:$secao", it - 1).apply()
                 refazerCapas(secao)
             }
@@ -3224,7 +3234,7 @@ class MainActivity : Activity() {
             secao == "android" -> jogosAndroid(apps).map { it.nome } + atalhos.map { nomeAtalho(it) }
             else -> roms.filter { "rom_${it.sistema.name}" == secao }.map { it.nome }
         }
-        val chaves = nomes?.flatMap { listOf(Capas.chave(it), Capas.chavePoster(it)) }?.toSet()
+        val chaves = nomes?.flatMap { listOf(Capas.chave(it), Capas.chavePoster(it), Capas.chaveQuadrada(it)) }?.toSet()
         trabalho.execute {
             Capas.esquecerAutomaticas(this, chaves)
             ui.post {

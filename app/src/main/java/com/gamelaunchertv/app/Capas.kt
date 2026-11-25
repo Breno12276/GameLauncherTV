@@ -101,11 +101,19 @@ object Capas {
         val PRIMEIRO_SGDB = "\u0000sgdb"
         val paralelo = Executors.newFixedThreadPool(6)
         val prontos = java.util.concurrent.ExecutorCompletionService<Pair<Pedido, String?>>(paralelo)
+        // "Só da fonte escolhida": esses pedidos não passam para as outras fontes quando a escolhida não tem a capa.
+        val so = soDaFonte(ctx)
+        val estritos = HashSet<String>()
         pendentes.forEach { p ->
             val fonte = if (p.exato) FonteCapa.AUTOMATICO else fontePreferida(ctx, secaoDoPedido(p))
+            val estrito = so && fonte != FonteCapa.AUTOMATICO
+            if (estrito) estritos += p.chave
             prontos.submit {
-                p to if (fonte == FonteCapa.STEAMGRIDDB && ativo()) PRIMEIRO_SGDB
-                else try { semChave(ctx, p, fonte) } catch (_: Exception) { null }
+                p to when {
+                    fonte == FonteCapa.STEAMGRIDDB && ativo() -> PRIMEIRO_SGDB
+                    estrito && fonte == FonteCapa.STEAMGRIDDB -> "" // sem chave: o SteamGridDB não busca
+                    else -> try { semChave(ctx, p, fonte, so = estrito) } catch (_: Exception) { null }
+                }
             }
         }
         paralelo.shutdown()
@@ -122,8 +130,9 @@ object Capas {
                 if (p != null && url == PRIMEIRO_SGDB) {
                     // SteamGridDB primeiro; sem a capa lá, as fontes sem chave na ordem de sempre.
                     url = try { procurar(p.termo, p.anos, p.exato, p.emPe, p.quadrada) } catch (_: Exception) { null }
-                    if (url == "") url = try { semChave(ctx, p) } catch (_: Exception) { null }
-                } else if (p != null && url == "" && ativo()) url = try { procurar(p.termo, p.anos, p.exato, p.emPe, p.quadrada) } catch (_: Exception) { null }
+                    if (url == "" && p.chave !in estritos) url = try { semChave(ctx, p) } catch (_: Exception) { null }
+                } else if (p != null && url == "" && ativo() && p.chave !in estritos)
+                    url = try { procurar(p.termo, p.anos, p.exato, p.emPe, p.quadrada) } catch (_: Exception) { null }
                 // Falha de rede não conta como "não achou": tenta de novo na próxima abertura.
                 if (p != null && url != null) {
                     cache[p.chave] = url to agora
@@ -152,6 +161,12 @@ object Capas {
     /** Seção da aba Jogos do pedido ("rom_PS2"; jogos Android e atalhos: "android"), para a escolha por plataforma. */
     fun secaoDoPedido(p: Pedido) = Sistema.entries.firstOrNull { it.anos == p.anos }?.let { "rom_${it.name}" } ?: "android"
 
+    /**
+     * "Só da fonte escolhida" ("fonte_capa_so"): a capa vem apenas da fonte escolhida (global ou da plataforma);
+     * se ela não tiver, o jogo fica sem capa automática em vez de buscar nas outras.
+     */
+    fun soDaFonte(ctx: Context) = ctx.getSharedPreferences("nova_home", Context.MODE_PRIVATE).getBoolean("fonte_capa_so", false)
+
     /** Fonte escolhida para a [secao]: a dela ("fonte_capa:<secao>") ou, sem escolha própria, a global ("fonte_capa"). */
     fun fontePreferida(ctx: Context, secao: String): FonteCapa {
         val p = ctx.getSharedPreferences("nova_home", Context.MODE_PRIVATE)
@@ -168,9 +183,9 @@ object Capas {
 
     /**
      * Capa pelas fontes sem chave: "" = não têm; null = erro de rede. Apps: o logo oficial pela Wikidata.
-     * [primeiro]: a fonte preferida vai na frente; as outras seguem na ordem de sempre.
+     * [primeiro]: a fonte preferida vai na frente; as outras seguem na ordem de sempre. [so]: só ela.
      */
-    private fun semChave(ctx: Context, p: Pedido, primeiro: FonteCapa = FonteCapa.AUTOMATICO): String? {
+    private fun semChave(ctx: Context, p: Pedido, primeiro: FonteCapa = FonteCapa.AUTOMATICO, so: Boolean = false): String? {
         if (p.exato) return p.pacote?.let { FontesLivres.logoDoApp(it) } ?: ""
         if (p.quadrada) return "" // fontes sem chave não têm capa quadrada
         val sistema = Sistema.entries.firstOrNull { it.anos == p.anos }
@@ -199,7 +214,8 @@ object Capas {
             FonteCapa.LIBRETRO to { if (p.anos == null) "" else FontesLivres.libretro(ctx, p.termo, p.anos, tipoCapaRoms(ctx), arquivo = p.arquivo) },
         )
         var erro = false
-        for ((_, passo) in passos.sortedBy { if (it.first == primeiro) 0 else 1 }) {
+        val ordem = if (so) passos.filter { it.first == primeiro } else passos.sortedBy { if (it.first == primeiro) 0 else 1 }
+        for ((_, passo) in ordem) {
             val r = try { passo() } catch (_: Exception) { null }
             if (r == null) erro = true else if (r.isNotEmpty()) return r
         }

@@ -112,6 +112,7 @@ E também:
 - 🍿 **Filmes e séries em alta:** fileiras do Stremio, Apple, Netflix (via TMDB) e YouTube, com títulos em português.
 - 🌈 **Luz e vibração do controle:** a barra de luz do DualShock 4 / DualSense acompanha a cor do jogo em foco.
 - 📱 **Chaves pelo celular:** escaneie um QR code e cole as chaves no celular, sem digitar com o controle.
+- 🗂️ **Fonte das capas:** em **Configurações → Capas**, escolha de onde baixar as capas de todos os jogos e, se quiser, uma fonte para cada plataforma (ex.: tudo da Steam, Switch do SteamGridDB). Com "Só da fonte escolhida", as capas vêm apenas dela.
 - 👥 **Perfis e controle parental:** favoritos, coleções, aparência e contas por pessoa; perfis infantis com PIN, limite de tempo por dia e sem jogos “só para adultos”.
 - 📚 **Coleções:** fileiras suas ("Multiplayer", "Zerar"…) com jogos de qualquer plataforma.
 - 📊 **Estatísticas:** tempo jogado hoje, na semana e no total, gráfico dos dias e os jogos mais jogados.

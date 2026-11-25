@@ -26,8 +26,8 @@ android {
         applicationId = "com.gamelaunchertv.app"
         minSdk = 33
         targetSdk = 36
-        versionCode = 33
-        versionName = "3.3"
+        versionCode = 34
+        versionName = "3.4"
     }
 
     // "pessoal": com as chaves do segredos.properties (só para os seus aparelhos).
